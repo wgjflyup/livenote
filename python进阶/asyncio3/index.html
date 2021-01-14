@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>13 asyncio并发编程进阶 - Python服务端入门与进阶指南</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "13 asyncio\u5e76\u53d1\u7f16\u7a0b\u8fdb\u9636";
+    var mkdocs_page_input_path = "python\u8fdb\u9636/asyncio3.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Python服务端入门与进阶指南</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Python重要操作与实践总结</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../重要操作/up/">01 Python需求与提高篇</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../重要操作/compile/">02 py源文件编译</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../typical_case/">03 重要操作总结</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Python常用数据类型汇集</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../python基础/list/">01 列表list</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/dict/">02 字典dict</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/tuple/">03 元组tuple</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/字符串/">04 字符串str</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/set/">05 集合set</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/数字/">06 数字类型</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Python内置函数与常用模块介绍</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../python基础/内置函数/">01 常用内置函数</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/异常/">02 异常处理</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/os模块/">03 os模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/sys模块/">04 sys模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/time模块/">05 time模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/序列化模块/">06 序列化模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/string/">07 string模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/random/">08 random模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/logging/">09 logging模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/optparse/">10 optparse模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/datetime模块/">11 datetime与dateutil模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/collections/">12 collections模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/加密解密/">13 加密与解密模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/configparser/">14 configparser模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/re模块/">15 正则表达式与re模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/操作excel/">16 Python3操作Excel</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/pymysql/">17 操作数据库pymysql模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/SQLAlchemy/">18 操作数据库SQLAlchemy模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/hmac/">19 校验客户端的合法性hmac模块</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Python进阶-面向对象-网编并发</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../面向对象/">01 进阶知识点与面向对象整合</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../生成器/">02 迭代器与生成器</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../网编并发/">03 网络编程与并发编程</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../socket编程/">04 Python中原生socket的案例</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../并发编程提升/">05 Python并发编程提升篇</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../文件操作/">06 文件操作</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../with/">07 with上下文</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../闭包装饰器/">08 闭包与装饰器</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../描述符/">09 Python中的描述符</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../copy/">10 Python中的深拷贝与浅拷贝</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../asyncio/">11 Python协程基础</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../asyncio2/">12 Python协程详解与进阶</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">13 asyncio并发编程进阶</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#asyncio">asyncio介绍</a></li>
+    
+
+    <li class="toctree-l3"><a href="#_1">事件循环</a></li>
+    
+
+    <li class="toctree-l3"><a href="#asyncio_1">使用asyncio</a></li>
+    
+
+    <li class="toctree-l3"><a href="#_2">获取协程的返回值</a></li>
+    
+
+    <li class="toctree-l3"><a href="#run_until_completerun_forever">run_until_complete与run_forever</a></li>
+    
+
+    <li class="toctree-l3"><a href="#futuretask">如何取消future(task)</a></li>
+    
+
+    <li class="toctree-l3"><a href="#_3">协程的嵌套(互相调用)</a></li>
+    
+
+    <li class="toctree-l3"><a href="#call_sooncall_atcall_latercall_soon_threadsafe">其他函数:call_soon/call_at/call_later/call_soon_threadsafe</a></li>
+    
+
+    <li class="toctree-l3"><a href="#asyncioio">线程池与asyncio结合完成阻塞IO请求</a></li>
+    
+
+    <li class="toctree-l3"><a href="#asynciohttp">asyncio模拟简单的http请求</a></li>
+    
+
+    </ul>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Python实现算法与数据结构</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../算法数据结构/">01 python实现算法与数据结构</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">开发环境-中间件等工具</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../缓存与redis/">01 缓存与redis</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../Github与虚拟环境/">02 Github与虚拟环境的使用</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../远程调试/">03 Pycharm连接远程代码</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../压测/">04 Mac/Linux压力测试神器Siege</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Linux服务端相关</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../linux/">01 Linux服务端相关</a>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Python服务端入门与进阶指南</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Python进阶-面向对象-网编并发 &raquo;</li>
+        
+      
+    
+    <li>13 asyncio并发编程进阶</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h3 id="asyncio">asyncio介绍</h3>
+<p>1、包含各种特定系统实现的模块化事件循环。</p>
+<p>2、传输和抽象协议。</p>
+<p>3、对TCP、UDP、SSL、子进程、延时调用以及其他的具体支持。</p>
+<p>4、模仿futures模块但适用于事件循环使用的Future类。</p>
+<p>5、基于yield from的协议和任务，可以让你用顺序的方式编写并发代码。</p>
+<p>6、当我们必须使用一个将产生阻塞IO的调用时，有接口可以把这个事件转移到线程池。</p>
+<p>7、模仿threading模块中的同步原语、可以用在单线程内的协程之间。</p>
+<h3 id="_1">事件循环</h3>
+<p><strong>1、高并发编程中的三个要素</strong></p>
+<ol>
+<li>事件循环</li>
+<li>回调(驱动生成器)</li>
+<li>epoll(IO多路复用)</li>
+</ol>
+<p><strong>2、asyncio</strong></p>
+<p>asyncio是python用于解决异步io编程的一整套解决方案：</p>
+<pre><code class="python">tornado、gevent、twisted（scrapy， django channels）
+</code></pre>
+
+<p><strong>3、tornado</strong></p>
+<p>torando自己实现了实现web服务器！</p>
+<p>django+flask使用第三方的web服务器：(uwsgi, gunicorn+nginx)</p>
+<p>tornado可以直接部署： nginx+tornado（nginx实现了一些tornado没有实现的功能）</p>
+<h3 id="asyncio_1">使用asyncio</h3>
+<pre><code class="python"># 使用asyncio
+import asyncio
+import time
+
+
+async def get_html(url):
+    print(&quot;start get url&quot;)
+    # 同步的time.sleep不能使用在协程中！得使用自己的！
+    # 这是一个耗时的操作：得加上await
+    await asyncio.sleep(2)
+    print(&quot;end get url&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    start_time = time.time()
+    # 自己完成select的操作
+    loop = asyncio.get_event_loop()
+    tasks = [get_html(&quot;http://www.imooc.com&quot;) for i in range(10)]
+    # 直接将任务传进去
+    &quot;&quot;&quot; 注意这里使用的是asyncio.wait &quot;&quot;&quot;
+    loop.run_until_complete(asyncio.wait(tasks))
+    print(time.time()-start_time)
+</code></pre>
+
+<h3 id="_2">获取协程的返回值</h3>
+<p><strong>方法1</strong></p>
+<pre><code class="python"># 获取协程的返回值
+import asyncio
+import time
+from functools import partial
+
+
+async def get_html(url):
+    print(&quot;start get url&quot;)
+    await asyncio.sleep(2)
+    return &quot;whw&quot;
+
+
+&quot;&quot;&quot; 使用paratial的话，传的参数必须放在前边！&quot;&quot;&quot;
+def callback(url, future):
+    print(url)
+    print(&quot;send email to whw&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    start_time = time.time()
+    # 一个线程只有一个loop
+    loop = asyncio.get_event_loop()
+    # 使用loop.create_task方法
+    task = loop.create_task(get_html(&quot;http://www.imooc.com&quot;))
+    # 可以添加一个callback！！！
+    # 注意只传函数名
+    # 使用partial包装callback！这样callback可以加参数了！partical方法返回的是个函数的地址
+    task.add_done_callback(partial(callback, &quot;http://www.imooc.com&quot;))
+    loop.run_until_complete(task)
+    print(task.result())
+    &quot;&quot;&quot;
+    start get url
+    http://www.imooc.com
+    send email to whw
+    whw
+    &quot;&quot;&quot;
+</code></pre>
+
+<p><strong>方法2</strong></p>
+<pre><code class="python"># 获取协程的返回值
+import asyncio
+import time
+from functools import partial
+
+
+async def get_html(url):
+    print(&quot;start get url&quot;)
+    await asyncio.sleep(2)
+    return &quot;whw&quot;
+
+def callback(url, future):
+    print(url)
+    print(&quot;send email to whw&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    start_time = time.time()
+    loop = asyncio.get_event_loop()
+        # 调用asyncio.ensure_future —— 实际中返回的也是task类型
+    get_future = asyncio.ensure_future(get_html(&quot;http://www.imooc.com&quot;))
+    loop.run_until_complete(get_future)
+    print(get_future.result())  # whw
+    &quot;&quot;&quot;
+    start get url
+    whw
+    &quot;&quot;&quot;
+</code></pre>
+
+<p><strong>wait与gather</strong></p>
+<p>gather更加高级，使用更加灵活。</p>
+<p><strong>wait的方法</strong></p>
+<pre><code class="python"># wait 和 gather
+import asyncio
+import time
+
+
+async def get_html(url):
+    print(&quot;start get url&quot;)
+    await asyncio.sleep(2)
+    print(&quot;end get url&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    start_time = time.time()
+    loop = asyncio.get_event_loop()
+    tasks = [get_html(&quot;http://www.imooc.com&quot;) for i in range(10)]
+    loop.run_until_complete(asyncio.gather(*tasks))
+    print(time.time()-start_time)
+</code></pre>
+
+<p><strong>gather的方法</strong></p>
+<pre><code class="python"># # wait 和 gather
+import asyncio
+import time
+
+
+async def get_html(url):
+    print(&quot;start get url&quot;)
+    await asyncio.sleep(2)
+    print(&quot;end get url&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    start_time = time.time()
+    loop = asyncio.get_event_loop()
+
+    # gather和wait的区别
+    # gather更加high-level
+    group1 = [get_html(&quot;http://projectsedu.com&quot;) for i in range(2)]
+    group2 = [get_html(&quot;http://www.imooc.com&quot;) for i in range(2)]
+    # gather方法
+    group1 = asyncio.gather(*group1)
+    group2 = asyncio.gather(*group2)
+    # 也可以取消掉任务
+    # group2.cancel()
+    # 直接传递多个group
+    loop.run_until_complete(asyncio.gather(group1, group2))
+    print(time.time() - start_time)
+</code></pre>
+
+<h3 id="run_until_completerun_forever">run_until_complete与run_forever</h3>
+<p>run_until_complete运行完指定的协程后自动停掉。</p>
+<pre><code class="python">&quot;&quot;&quot; loop会被放到future中:这样在任何future或者task中loop都会被停止！ &quot;&quot;&quot;
+&quot;&quot;&quot; loop放在future中，future也放在loop中～很容易引起循环引用！ &quot;&quot;&quot;
+
+import asyncio
+loop = asyncio.get_event_loop()
+loop.run_forever() # 永不会停止
+
+loop.run_until_complete(task...) # 自动停止
+</code></pre>
+
+<h3 id="futuretask">如何取消future(task)</h3>
+<pre><code class="python">import asyncio
+import time
+
+async def get_html(sleep_times):
+    print(&quot;waiting&quot;)
+    await asyncio.sleep(sleep_times)
+    print(&quot;done after {}s&quot;.format(sleep_times))
+
+
+if __name__ == &quot;__main__&quot;:
+    task1 = get_html(2)
+    task2 = get_html(3)
+    task3 = get_html(3)
+
+    tasks = [task1, task2, task3]
+
+    loop = asyncio.get_event_loop()
+
+    try:
+        loop.run_until_complete(asyncio.wait(tasks))
+    # 按了Ctrl+c后取消任务！
+    except KeyboardInterrupt as e:
+        all_tasks = asyncio.Task.all_tasks()
+        for task in all_tasks:
+            print(&quot;cancel task&quot;)
+            # task.cancel()会返回True或者False
+            print(task.cancel())
+        loop.stop()
+        &quot;&quot;&quot; # 必须调用run_forever() &quot;&quot;&quot;
+        loop.run_forever()
+    finally:
+        loop.close()
+</code></pre>
+
+<h3 id="_3">协程的嵌套(互相调用)</h3>
+<p>详见asyncio官方文档：</p>
+<p><a href="https://docs.python.org/3.6/library/asyncio-task.html#creating-tasks">协程相互调用文档</a></p>
+<pre><code class="python">import asyncio
+
+async def compute(x, y):
+    print(&quot;Compute %s + %s ...&quot; % (x, y))
+    await asyncio.sleep(1.0)
+    return x + y
+
+async def print_sum(x, y):
+    result = await compute(x, y)
+    print(&quot;%s + %s = %s&quot; % (x, y, result))
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(print_sum(1, 2))
+loop.close()
+</code></pre>
+
+<p><strong>时序图</strong></p>
+<p><img alt="666" src="../../imgs/666.png" /></p>
+<h3 id="call_sooncall_atcall_latercall_soon_threadsafe">其他函数:call_soon/call_at/call_later/call_soon_threadsafe</h3>
+<p><strong>call_soon即刻执行</strong></p>
+<p>——在队列里面等到下一次循环的时候立即执行。</p>
+<pre><code class="python">import asyncio
+
+def callback(sleep_times):
+    print(&quot;success time {}&quot;.format(sleep_times))
+
+# 停止
+def stoploop(loop):
+    loop.stop()
+
+
+#call_later, call_at
+if __name__ == &quot;__main__&quot;:
+    loop = asyncio.get_event_loop()
+    now = loop.time()
+
+    loop.call_soon(callback, 2)
+    loop.call_soon(callback, 1)
+    loop.call_soon(callback, 3)
+    # 停止
+    loop.call_soon(stoploop, loop)
+    loop.run_forever()
+</code></pre>
+
+<p><strong>call_later</strong></p>
+<p>根据延迟调用的时间来调用，并且是在call_soon之后调用。</p>
+<pre><code class="python">import asyncio
+
+def callback(sleep_times):
+    print(&quot;success time {}&quot;.format(sleep_times))
+
+# 停止
+def stoploop(loop):
+    loop.stop()
+
+
+if __name__ == &quot;__main__&quot;:
+    loop = asyncio.get_event_loop()
+    now = loop.time()
+    # 第一个参数是指定的时间
+    loop.call_later(2,callback, 2)
+    loop.call_later(1,callback, 1)
+    loop.call_later(3,callback, 3)
+    # 先执行call_soon
+    loop.call_soon(callback, 4)
+    # # 停止
+    # loop.call_soon(stoploop, loop)
+    loop.run_forever()
+    &quot;&quot;&quot;
+    success time 4
+    success time 1
+    success time 2
+    success time 3
+    &quot;&quot;&quot;
+</code></pre>
+
+<p><strong>call_at</strong></p>
+<pre><code class="python">import asyncio
+
+def callback(sleep_times,loop):
+    print(&quot;success time {}&quot;.format(loop.time()))
+
+
+# 停止
+def stoploop(loop):
+    loop.stop()
+
+
+#call_later, call_at
+if __name__ == &quot;__main__&quot;:
+    loop = asyncio.get_event_loop()
+    # 内部的单调时间
+    now = loop.time()
+    # 第一个参数是指定的时间 —— 是内部的时钟时间
+    loop.call_at(now+2,callback, 2,loop)
+    loop.call_at(now+1,callback, 1,loop)
+    loop.call_at(now+3,callback, 3,loop)
+    # 先执行call_soon
+    loop.call_soon(callback, 4,loop)
+    # # 停止
+    # loop.call_soon(stoploop, loop)
+    loop.run_forever()
+    &quot;&quot;&quot;
+    success time 22962.654698165
+    success time 22963.65639768
+    success time 22964.658318416
+    success time 22965.659323424
+    &quot;&quot;&quot;
+</code></pre>
+
+<p><strong>call_soon_threadsafe</strong></p>
+<p>线程安全的方法 —— 与call_soon差不多，不过它是线程安全的 —— 用法与call_soon一样！</p>
+<h3 id="asyncioio">线程池与asyncio结合完成阻塞IO请求</h3>
+<p>—— 如果现实中某一个模块或者接口必须使用阻塞的话（pymysql等），可以将其放在线程池中运行！</p>
+<pre><code class="python"># 使用多线程：在协程中集成阻塞io
+import socket
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
+from urllib.parse import urlparse
+
+&quot;&quot;&quot; 阻塞的接口 &quot;&quot;&quot;
+def get_url(url):
+    # 通过socket请求html
+    url = urlparse(url)
+    host = url.netloc
+    path = url.path
+    if path == &quot;&quot;:
+        path = &quot;/&quot;
+    #建立socket连接
+    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    # client.setblocking(False)
+    client.connect((host, 80)) # 阻塞不会消耗cpu
+    #不停的询问连接是否建立好， 需要while循环不停的去检查状态
+    #做计算任务或者再次发起其他的连接请求
+    client.send(&quot;GET {} HTTP/1.1\r\nHost:{}\r\nConnection:close\r\n\r\n&quot;.format(path, host).encode(&quot;utf8&quot;))
+    data = b&quot;&quot;
+    while True:
+        d = client.recv(1024)
+        if d:
+            data += d
+        else:
+            break
+    data = data.decode(&quot;utf8&quot;)
+    html_data = data.split(&quot;\r\n\r\n&quot;)[1]
+    print(html_data)
+    client.close()
+
+
+if __name__ == &quot;__main__&quot;:
+    import time
+    start_time = time.time()
+    loop = asyncio.get_event_loop()
+    # 线程池设为3
+    executor = ThreadPoolExecutor(3)
+    tasks = []
+    for url in range(20):
+        url = &quot;http://shop.projectsedu.com/goods/{}/&quot;.format(url)
+        # 将某个阻塞IO的函数放在executor中运行
+        # 第一个参数是线程池 —— 第二个参数是阻塞函数，第三个参数是阻塞IO函数用到的参数
+        task = loop.run_in_executor(executor, get_url, url)
+        tasks.append(task)
+
+    loop.run_until_complete(asyncio.wait(tasks))
+    print(&quot;last time:{}&quot;.format(time.time()-start_time))
+</code></pre>
+
+<h3 id="asynciohttp">asyncio模拟简单的http请求</h3>
+<p>asyncio没有提供http协议接口，只提供了TCP/UDP协议接口。</p>
+<p>如果想使用http协议请求url的话可以使用<code>aiohttp</code>——搭建http服务器或者做爬虫。</p>
+<pre><code class="python"># asyncio 没有提供http协议的接口 aiohttp
+import asyncio
+import socket
+from urllib.parse import urlparse
+
+&quot;&quot;&quot;# 改成协程函数&quot;&quot;&quot;
+async def get_url(url):
+    #通过socket请求html
+    url = urlparse(url)
+    host = url.netloc
+    path = url.path
+    if path == &quot;&quot;:
+        path = &quot;/&quot;
+
+    # 建立socket连接
+    &quot;&quot;&quot;# 使用await&quot;&quot;&quot;
+    reader, writer = await asyncio.open_connection(host,80)
+    writer.write(&quot;GET {} HTTP/1.1\r\nHost:{}\r\nConnection:close\r\n\r\n&quot;.format(path, host).encode(&quot;utf8&quot;))
+    all_lines = []
+    async for raw_line in reader:
+        data = raw_line.decode(&quot;utf8&quot;)
+        all_lines.append(data)
+    html = &quot;\n&quot;.join(all_lines)
+    return html
+
+async def main():
+    tasks = []
+    for url in range(20):
+        url = &quot;http://shop.projectsedu.com/goods/{}/&quot;.format(url)
+        tasks.append(asyncio.ensure_future(get_url(url)))
+    for task in asyncio.as_completed(tasks):
+        result = await task
+        print(result)
+
+if __name__ == &quot;__main__&quot;:
+    import time
+    start_time = time.time()
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())
+    print('last time:{}'.format(time.time()-start_time))
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../算法数据结构/" class="btn btn-neutral float-right" title="01 python实现算法与数据结构">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../asyncio2/" class="btn btn-neutral" title="12 Python协程详解与进阶"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../asyncio2/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../算法数据结构/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+
+</body>
+</html>

@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>02 字典dict - Python服务端入门与进阶指南</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "02 \u5b57\u5178dict";
+    var mkdocs_page_input_path = "python\u57fa\u7840/dict.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Python服务端入门与进阶指南</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Python重要操作与实践总结</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../重要操作/up/">01 Python需求与提高篇</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../重要操作/compile/">02 py源文件编译</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../typical_case/">03 重要操作总结</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Python常用数据类型汇集</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../list/">01 列表list</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">02 字典dict</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#dict">dict的基本操作</a></li>
+    
+
+    <li class="toctree-l3"><a href="#setdefault">setdefault的一个使用案例</a></li>
+    
+
+    <li class="toctree-l3"><a href="#_1">字典生成式</a></li>
+    
+
+    <li class="toctree-l3"><a href="#if-else">使用字典映射代替if-else分支</a></li>
+    
+
+    <li class="toctree-l3"><a href="#_2">删除字典中的数据的方法</a></li>
+    
+
+    <li class="toctree-l3"><a href="#_3">字典的打散传参</a></li>
+    
+
+    </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../tuple/">03 元组tuple</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../字符串/">04 字符串str</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../set/">05 集合set</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../数字/">06 数字类型</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Python内置函数与常用模块介绍</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../内置函数/">01 常用内置函数</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../异常/">02 异常处理</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../os模块/">03 os模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../sys模块/">04 sys模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../time模块/">05 time模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../序列化模块/">06 序列化模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../string/">07 string模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../random/">08 random模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../logging/">09 logging模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../optparse/">10 optparse模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../datetime模块/">11 datetime与dateutil模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../collections/">12 collections模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../加密解密/">13 加密与解密模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../configparser/">14 configparser模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../re模块/">15 正则表达式与re模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../操作excel/">16 Python3操作Excel</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../pymysql/">17 操作数据库pymysql模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../SQLAlchemy/">18 操作数据库SQLAlchemy模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../hmac/">19 校验客户端的合法性hmac模块</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Python进阶-面向对象-网编并发</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../python进阶/面向对象/">01 进阶知识点与面向对象整合</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python进阶/生成器/">02 迭代器与生成器</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python进阶/网编并发/">03 网络编程与并发编程</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python进阶/socket编程/">04 Python中原生socket的案例</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python进阶/并发编程提升/">05 Python并发编程提升篇</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python进阶/文件操作/">06 文件操作</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python进阶/with/">07 with上下文</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python进阶/闭包装饰器/">08 闭包与装饰器</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python进阶/描述符/">09 Python中的描述符</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python进阶/copy/">10 Python中的深拷贝与浅拷贝</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python进阶/asyncio/">11 Python协程基础</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python进阶/asyncio2/">12 Python协程详解与进阶</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python进阶/asyncio3/">13 asyncio并发编程进阶</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Python实现算法与数据结构</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../python进阶/算法数据结构/">01 python实现算法与数据结构</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">开发环境-中间件等工具</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../python进阶/缓存与redis/">01 缓存与redis</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python进阶/Github与虚拟环境/">02 Github与虚拟环境的使用</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python进阶/远程调试/">03 Pycharm连接远程代码</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python进阶/压测/">04 Mac/Linux压力测试神器Siege</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Linux服务端相关</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../python进阶/linux/">01 Linux服务端相关</a>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Python服务端入门与进阶指南</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Python常用数据类型汇集 &raquo;</li>
+        
+      
+    
+    <li>02 字典dict</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h3 id="dict">dict的基本操作</h3>
+<p><strong>demo1</strong></p>
+<pre><code class="python">dic1 = {'name':'whw','age':22,'sex':'male'}
+dic2 = {'name':'whw'}
+##注意，字典时无序的，没有要求字典排序
+'''
+特别注意：字典没有remove方法！！只有列表有remove方法！
+'''
+#创建一个字典——dict.fromkeys()
+dic3 = dict.fromkeys(['name1','name2','name3'],'whw1')
+print(dic3)#{'name1': 'whw1', 'name2': 'whw1', 'name3': 'whw1'}
+
+#增
+#setdefault 在字典中添加键值对，如果只有键那对应的值是none,但是如果原字典中存在设置的键值对，则他不会更改或者覆盖
+dic1.setdefault('k','v')
+print(dic1)#{'name': 'whw', 'age': 22, 'sex': 'male', 'k': 'v'}
+dic1.setdefault('k','v1')
+print(dic1)#{'name': 'whw', 'age': 22, 'sex': 'male', 'k': 'v'}
+##添加键值对
+dic1['n'] = 'm'
+print(dic1)#{'name': 'whw', 'age': 22, 'sex': 'male', 'k': 'v', 'n': 'm'}
+
+#删
+'''
+del dic2
+print(dic2)#会报错——NameError: name 'dic2' is not defined
+'''
+# 清空字典
+print('dic1:',dic1)#dic1: {'name': 'whw', 'age': 22, 'sex': 'male', 'k': 'v', 'n': 'm'}
+dic2.clear()
+print(dic2) # {}
+#pop方法——pop(key,'无key返回的值')————返回删除的“值”
+print(dic1.pop('k')) #v
+print(dic1.pop('w','没有这个键')) #没有这个键
+#popitem()方法————
+'''
+# 3.5之前随机删除字典中的某个键值对，并将删除的键值对以元组的形式返回
+# 3.6之后删除的是最后的键值对
+'''
+print(dic1.popitem())#('n', 'm')
+print(dic1)#{'name': 'whw', 'age': 22, 'sex': 'male'}
+
+#改
+#update方法——字典的扩展
+dic3 = {'a1':'b'}
+dic1.update(dic3)
+print(dic1)#{'name': 'whw', 'age': 22, 'sex': 'male', 'a1': 'b'}
+#找到对应的键直接改
+dic3['a1'] = 123
+print(dic3)#{'a1': 123}
+
+###查
+print(dic1)#{'name': 'whw', 'age': 22, 'sex': 'male', 'a1': 'b'}
+print(dic1.get('name'))#whw
+print(dic1.get('whw','没有这个key'))#没有这个key
+#查出所有的key
+d1 = dic1.keys()
+print(d1)#dict_keys(['name', 'age', 'sex', 'a1'])
+print(type(d1))#&lt;class 'dict_keys'&gt;
+print(list(d1))#['name', 'age', 'sex', 'a1']
+#查出所有的键值对
+d2 = dic1.items()
+print(d2)#dict_items([('name', 'whw'), ('age', 22), ('sex', 'male'), ('a1', 'b')])
+#查出所有的值
+d3 = dic1.values()
+print(d3)#dict_values(['whw', 22, 'male', 'b'])
+
+##字典的遍历
+#i是序号，默认是0
+#v是字典的键
+for i,v in enumerate(dic1,1):
+    print(i,v,dic1[v])
+#或者可以这样：但是没有数字了
+for k,v in dic1.items():
+    print(k,v)
+
+##练习
+###一行操作改变dic11字典：
+dic11 = {'k1':'v111','a1':'b'}
+dic111 = {'k1':'v1','k2':'v2','k3':'v3'}
+dic11.update(dic111)
+print(dic11)#{'k1': 'v1', 'a1': 'b', 'k2': 'v2', 'k3': 'v3'}
+print(dic11.update(dic111))#None
+</code></pre>
+
+<p><strong>demo2</strong></p>
+<pre><code class="python">###python3.5(包括3.5之前)字典是无序的
+###python3.6之后字典是有序的
+
+### 字典的优点：
+            #字典可存储大量的关系数据
+            #字典的查询的速度特别快
+
+# 注意，如果字典的两个键一样了，取后面的!!!
+dicc = {
+    'name':'wxx',
+    'name':'wanghw',
+    'age':22
+}
+print(dicc) #{'name': 'wanghw', 'age': 22}
+
+dic1 = {'name':'wanghw','age':22,'sex':'male'}
+dic2 = {'name':'whw'}
+
+# 增
+##添加键值对
+dic2['age'] = 18
+print(dic2)
+##setdefault 在字典中添加键值对，如果只有键那对应的值是none,但是如果原字典中存在设置的键值对，则他不会更改或者覆盖
+dic2.setdefault('k','v')
+print(dic2)#{'name': 'whw', 'age': 18, 'k': 'v'}
+# 如果原字典中存在设置的键值对，则他不会更改或者覆盖
+dic2.setdefault('k',123)
+print(dic2)#{'name': 'whw', 'age': 18, 'k': 'v'}
+
+# 删
+## del
+
+## clear
+
+##pop——pop(key,'无key返回的值')————返回删除的“值”
+print(dic2.pop('k'))
+print(dic2.pop('w','没有这个键'))
+
+##popitem——随机删除字典中的某个键值对，并将删除的键值对以元组的形式返回
+print(dic3.popitem())
+print(dic3)
+
+# 改 
+##扩展——update————存在的键值对“覆盖”、不存在的键值对添加到最后
+dic3 = {'a1':'b'}
+dic1.update(dic3)
+print(dic1)
+'''
+注意如果update的字典有共同的键，则&quot;更新&quot;了：
+dict1 = {'k1':'v111','a1':'b'}
+dict2 = {'k1':'v1','k2':'v2','k3':'v3'}
+dict1.update(dict2)
+print(dict1)#{'k1': 'v1', 'a1': 'b', 'k2': 'v2', 'k3': 'v3'}
+'''
+## 找到对应的值直接改
+dic1['a1'] = 'A'
+print(dic1)
+
+# 查
+##直接指定键——不好，没有会报错
+print(dic1['name'])
+# print(dic1['name1'])#没有的话会报错
+##get方法
+print(dic1.get('name'))
+print(dic1.get('name1','没有这个键'))#没有的话不会报错，默认返回None
+
+##查出所有的key
+print(dic1.keys())
+print(type(dic1.keys()))#&lt;class 'dict_keys'&gt;
+###可以转化成列表
+print(list(dic1.keys()))#['name', 'age', 'sex', 'a1']
+
+##查出所有键值对——元组形式返回
+print(dic1.items())#dict_items([('name', 'wanghw'), ('age', 22), ('sex', 'male'), ('a1', 'A')])
+
+## 查出所有值
+print(dic1.values())#dict_values(['wanghw', 22, 'male', 'A'])
+
+## 字典的遍历——enumerate：i默认从0开始，v是字典的键
+for i,v in enumerate(dic1):
+    print(i,v,dic1[v])
+'''
+0 name wanghw
+1 age 22
+2 sex male
+3 a1 A
+'''
+# 或者可以这样：
+for i,v in enumerate(dic1.items()):
+    print(i,v)
+'''
+0 ('name', 'wanghw')
+1 ('age', 22)
+2 ('sex', 'male')
+3 ('a1', 'A')
+'''
+# 还可以这样：
+for k,v in dic1.items():
+    print(k,v)
+'''
+name wanghw
+age 22
+sex male
+a1 A
+'''
+
+###练习
+###一行操作改变dic11字典：
+dict1 = {'k1':'v111','a1':'b'}
+dict2 = {'k1':'v1','k2':'v2','k3':'v3'}
+dict1.update(dict2)
+print(dict1)#{'k1': 'v1', 'a1': 'b', 'k2': 'v2', 'k3': 'v3'}
+# dict2.update(dict1)
+# print(dict2)
+</code></pre>
+
+<h3 id="setdefault">setdefault的一个使用案例</h3>
+<pre><code class="python">'''# 有字符串&quot;k: 1|k1 :2|k2:3  |k3 :4&quot; 处理成字典 {'k':1,'k1':2....}'''
+
+str1 ='k: 1|k1 :2|k2:3  |k3 :4'
+list1 = str1.split('|')
+dic = {}
+#注意有空格
+print(list1)#['k: 1', 'k1 :2', 'k2:3  ', 'k3 :4']
+for i in list1:
+       #再次将里面的每个字符串按照冒号分割成键与值
+       list2 = i.split(':')
+       #注意先消除一下空格
+       dic.setdefault(list2[0].strip(),int(list2[1].strip()))
+print(dic)#{'k': 1, 'k1': 2, 'k2': 3, 'k3': 4}
+</code></pre>
+
+<h3 id="_1">字典生成式</h3>
+<p>巧用字典的生成式可以提升代码的执行效率，下面是一个例子：</p>
+<pre><code class="python">name_dic = {&quot;001&quot;:&quot;whw&quot;,&quot;002&quot;:&quot;sasuke&quot;,&quot;003&quot;:&quot;naruto&quot;}
+
+hobby_dic = {&quot;001&quot;:&quot;coding&quot;,&quot;002&quot;:&quot;千鸟流&quot;,&quot;003&quot;:&quot;螺旋丸&quot;}
+
+# 字典生成式
+dic = {name_dic[key]:value for key,value in hobby_dic.items()}
+print(dic) 
+&quot;&quot;&quot;
+{'whw': 'coding', 'sasuke': '千鸟流', 'naruto': '螺旋丸'}
+&quot;&quot;&quot;
+</code></pre>
+
+<h3 id="if-else">使用字典映射代替if-else分支</h3>
+<p>Python的字典实际上是一种<code>映射关系</code>，在实际中用好了这种映射关系可以大大的提升我们代码的水平。</p>
+<pre><code class="python">def whw():
+    print(&quot;whw...&quot;)
+
+def naruto():
+    print(&quot;naruto...&quot;)
+
+def sasuke():
+    print(&quot;sasuke...&quot;)
+
+func_dic = {
+    &quot;key1&quot;:whw,
+    &quot;key2&quot;:naruto,
+    &quot;key3&quot;:sasuke,
+}
+# 如果有参数的话需要对应函数的参数数量保持一致
+for key in func_dic:
+    func_dic[key]()
+</code></pre>
+
+<h3 id="_2">删除字典中的数据的方法</h3>
+<p>一般情况下字典不支持在遍历的时候直接删除字典中的元素的，删除字典中元素的正确方法如下：</p>
+<pre><code class="python">dic1 = {&quot;whw&quot;:[18,12,22],&quot;naruto&quot;:[0,0,0],&quot;sasuke&quot;:[22,22,12],&quot;sakurua&quot;:[0,1,2],&quot;wanghw&quot;:[0,0,0]}
+
+for key in list(dic1.keys()):
+    # 删除全是0的
+    if sum(dic1[key]) == 0:
+        del dic1[key]
+print(dic1) # {'whw': [18, 12, 22], 'sasuke': [22, 22, 12], 'sakurua': [0, 1, 2]}
+</code></pre>
+
+<h3 id="_3">字典的打散传参</h3>
+<p><a href="https://huoyingwhw.com/2019/08/09/%E6%B5%85%E8%B0%88Python%E4%B8%AD%E5%AD%97%E5%85%B8%E7%9A%84%E6%89%93%E6%95%A3%E4%BC%A0%E5%8F%82/">浅谈Python中字典的打散传参</a></p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../tuple/" class="btn btn-neutral float-right" title="03 元组tuple">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../list/" class="btn btn-neutral" title="01 列表list"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../list/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../tuple/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+
+</body>
+</html>

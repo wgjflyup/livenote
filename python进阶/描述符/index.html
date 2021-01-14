@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>09 Python中的描述符 - Python服务端入门与进阶指南</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "09 Python\u4e2d\u7684\u63cf\u8ff0\u7b26";
+    var mkdocs_page_input_path = "python\u8fdb\u9636/\u63cf\u8ff0\u7b26.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Python服务端入门与进阶指南</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Python重要操作与实践总结</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../重要操作/up/">01 Python需求与提高篇</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../重要操作/compile/">02 py源文件编译</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../typical_case/">03 重要操作总结</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Python常用数据类型汇集</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../python基础/list/">01 列表list</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/dict/">02 字典dict</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/tuple/">03 元组tuple</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/字符串/">04 字符串str</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/set/">05 集合set</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/数字/">06 数字类型</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Python内置函数与常用模块介绍</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../python基础/内置函数/">01 常用内置函数</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/异常/">02 异常处理</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/os模块/">03 os模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/sys模块/">04 sys模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/time模块/">05 time模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/序列化模块/">06 序列化模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/string/">07 string模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/random/">08 random模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/logging/">09 logging模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/optparse/">10 optparse模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/datetime模块/">11 datetime与dateutil模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/collections/">12 collections模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/加密解密/">13 加密与解密模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/configparser/">14 configparser模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/re模块/">15 正则表达式与re模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/操作excel/">16 Python3操作Excel</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/pymysql/">17 操作数据库pymysql模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/SQLAlchemy/">18 操作数据库SQLAlchemy模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/hmac/">19 校验客户端的合法性hmac模块</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Python进阶-面向对象-网编并发</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../面向对象/">01 进阶知识点与面向对象整合</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../生成器/">02 迭代器与生成器</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../网编并发/">03 网络编程与并发编程</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../socket编程/">04 Python中原生socket的案例</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../并发编程提升/">05 Python并发编程提升篇</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../文件操作/">06 文件操作</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../with/">07 with上下文</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../闭包装饰器/">08 闭包与装饰器</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">09 Python中的描述符</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#_1">描述符的定义</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#_2">描述符协议</a></li>
+        
+            <li><a class="toctree-l4" href="#pythonproperty">Python中默认的property</a></li>
+        
+            <li><a class="toctree-l4" href="#descriptorproperty">使用Descriptor自定义property</a></li>
+        
+        </ul>
+    
+
+    </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../copy/">10 Python中的深拷贝与浅拷贝</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../asyncio/">11 Python协程基础</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../asyncio2/">12 Python协程详解与进阶</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../asyncio3/">13 asyncio并发编程进阶</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Python实现算法与数据结构</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../算法数据结构/">01 python实现算法与数据结构</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">开发环境-中间件等工具</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../缓存与redis/">01 缓存与redis</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../Github与虚拟环境/">02 Github与虚拟环境的使用</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../远程调试/">03 Pycharm连接远程代码</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../压测/">04 Mac/Linux压力测试神器Siege</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Linux服务端相关</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../linux/">01 Linux服务端相关</a>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Python服务端入门与进阶指南</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Python进阶-面向对象-网编并发 &raquo;</li>
+        
+      
+    
+    <li>09 Python中的描述符</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="_1">描述符的定义</h1>
+<p>通常情况下，我们可以认为"假设对象的某个属性被绑定了(<code>__get__</code>, <code>__set__</code>, <code>__delete__</code>)这三个方法中的任意一个方法"，那么我们称该属性为"描述符"</p>
+<pre><code class="python">class Foo(object):
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+foo = Foo(&quot;Wanghw&quot;, 18)
+</code></pre>
+
+<p>我们不能称 foo.name, foo.age 这两个属性为描述符，因为它们都没有绑定上面三个方法。</p>
+<p>默认情况下, 对象的属性访问是通过get, set, delete这三个方法访问属性的字典__dict__来实现的。</p>
+<p>比如说，a.x会首先查找a.__dict__['x'], 如果没有找到则查找type(a).__dict__['x'], 然后不断的往上查找直到metaclass(不包括metaclass)。</p>
+<p>如下代码所示：</p>
+<pre><code class="python">class Foo(object):
+    country = &quot;China&quot;
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+foo = Foo(&quot;Wanghw&quot;, 18)
+print(foo.__dict__)    # {'name': 'Wanghw', 'age': 18}
+print(type(foo).__dict__)    # {'__module__': '__main__', 'country': 'China', '__init__': &lt;function Foo.__init__ at 0x103802488&gt;, '__dict__': &lt;attribute '__dict__' of 'Foo' objects&gt;, '__weakref__': &lt;attribute '__weakref__' of 'Foo' objects&gt;, '__doc__': None}
+</code></pre>
+
+<p>上面的代码中，如果print(foo.name)或者print(foo.age)或查找<code>foo.__dict__</code>, 如果print(foo.country)则会查找type(foo)既<code>Foo.__dict__</code>。</p>
+<p>如果查找过程中遇到描述符，那么Python解释器就会用描述符中的方法来替代查找顺序，到底是先查找对象的__dict__还是描述符，取决于描述符类型，我们将在下面的小节中演示。</p>
+<h2 id="_2">描述符协议</h2>
+<pre><code>descr.__get__(self, obj, type=None) --&gt; value
+descr.__set__(self, obj, value) --&gt; None
+descr.__delete__(self, obj) --&gt; None
+</code></pre>
+
+<p>如果定义了以上三个方法中的任意一个，那么，我们就可以认为该对象是一个描述符对象，它会覆盖对象属性的查找顺序。</p>
+<p>如下代码所示：</p>
+<pre><code class="python">class Bar(object):
+    def __get__(self, instance, owner):
+        print(&quot;__get__&quot;)
+
+    def __set__(self, instance, value):
+        print(&quot;__set__&quot;)
+
+    def __delete__(self, instance, value):
+        print(&quot;__delete__&quot;)
+
+
+class Foo(object):
+    bar = Bar()
+
+foo = Foo()
+</code></pre>
+
+<p>以上代码中，foo的bar属性就被认为是一个描述符。</p>
+<p>上文提到了描述符类型，描述符分为，Data Descriptor和Non-data Descriptor。</p>
+<p>如果一个对象定义了<code>__get__</code>()和<code>__set__</code>()这两个方法，那么我们认为该对象是一个Data Descriptor。如果只定义了<code>__get__</code>()方法，那就是Non-data Descriptor，如下代码所示：</p>
+<h4 id="data-descriptor">Data Descriptor</h4>
+<pre><code>class Bar(object):
+    def __get__(self, instance, owner):
+        print("get")
+
+    def __set__(self, instance, value):
+        print("__set__")
+
+    def __delete__(self, instance, value):
+        print("__delete__")
+
+class Foo(object):
+    bar = Bar()
+
+foo = Foo()
+</code></pre>
+<p>以上代码中，foo的bar属性就被认为是一个描述符，而且是Data Descriptor。</p>
+<h4 id="non-data-descriptor">Non-data Descriptor</h4>
+<pre><code>class Bar(object):
+    def __get__(self, instance, owner):
+        print(&quot;__get__&quot;)
+
+
+class Foo(object):
+    bar = Bar()
+
+
+foo = Foo()
+</code></pre>
+
+<p>以上代码中，foo的bar属性就被认为是一个描述符，而且是Non-data Descriptor。</p>
+<p>Data and non-data descriptors的不同点在于访问对象属性的方式。</p>
+<p>如果对象的字典<code>__dict__</code>中有一个跟Data Descriptor同名的属性，那么，Data Descriptor会覆盖<code>__dict__</code>的查找，如下代码所示：</p>
+<pre><code>class Bar(object):
+    def __get__(self, instance, owner):
+        print(&quot;__get__&quot;)
+
+    def __set__(self, obj, value):
+        print(&quot;__set__&quot;)
+
+
+class Foo(object):
+    bar = Bar()
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+        self.bar = &quot;bar&quot;
+
+
+foo = Foo(&quot;Wanghw&quot;, 18)
+foo.bar    # __get__
+</code></pre>
+
+<p>以上代码中，foo对象的bar属性查找会执行对象的<code>__get__</code>方法。因为，Data Descriptor会覆盖<code>__dict__</code>的查找。</p>
+<p>如果对象的字典<code>__dict__</code>中有一个跟Non-data Descriptor同名的属性，那么，对象的<code>__dict__</code>查找会覆盖Non-data Descriptor，如下代码所示：</p>
+<pre><code>class Bar(object):
+    def __get__(self, instance, owner):
+        print(&quot;__get__&quot;)
+
+
+class Foo(object):
+    bar = Bar()
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+        self.bar = &quot;bar&quot;
+
+
+foo = Foo(&quot;Wanghw&quot;, 18)
+foo.bar    # &quot;bar&quot;
+</code></pre>
+
+<p>以上代码中，foo对象的bar属性查找会打印“bar”，因为，对象的<code>__dict__</code>查找会覆盖Non-data Descriptor。</p>
+<h2 id="pythonproperty">Python中默认的property</h2>
+<p>在Python面向对象的设计中，有一个非常重要的知识点，叫做property，它的实现方式有多种，我们通过下面的代码演示其中一种：</p>
+<pre><code>class Foo(object):
+    def __init__(self, name):
+        self._name = name
+
+    @property
+    def name(self):
+        return self._name
+
+
+foo = Foo(&quot;Wanghw&quot;)
+print(foo._name)    # &quot;Wanghw&quot;
+print(foo.name)    # &quot;Wanghw&quot;
+</code></pre>
+
+<p>在上面的代码示例中，我们使用foo._name能够找到该属性的值”Wanghw“，我们也可以通过foo.name找到该属性的值”Wanghw“（因为该属性返回<code>self._name</code>)。</p>
+<p>我们通过在Foo类中定义一个name方法，然后通过默认的装饰器property实现访问方法时，不进行常用的函数调用方式。</p>
+<p>在这个过程中，存在一个疑问，既然希望通过属性的方式访问对象的方法，且返回值就是某个属性，那么为什么不直接在<code>__init__</code>里面定义一个属性。</p>
+<p>其实，属性的更多的时候，是动态的获取某个值，并保留属性的访问方式，而不是简单的返回已存在的属性的值，比如：</p>
+<pre><code>class Foo(object):
+    def __init__(self, name):
+        self._name = name
+
+    @property
+    def stock(self):
+        return 100 + 100
+
+
+foo = Foo(&quot;Wanghw&quot;)
+print(foo._name)    # &quot;Wanghw&quot;
+print(foo.stock)    # 200
+</code></pre>
+
+<p>我们在前面的章节中提到过，Python中的property，static method，class method的实现都依赖于descriptor的机制来实现。</p>
+<p>那么，接下来，我们来自定义一个property。</p>
+<h2 id="descriptorproperty">使用Descriptor自定义property</h2>
+<p>从上一小节中，我们可以看到，将类中的方法修改为一个property，就是利用了装饰器@property。我们知道装饰器语法糖@decorator，等价于 func = decorator(func)，如下代码所示：</p>
+<pre><code>class Foo(object):
+    def stock(self):
+        return 100 + 100
+    print(stock)    # &lt;function Foo.stock at 0x101a57048&gt;
+
+
+class Foo(object):
+    @property
+    def stock(self):
+        return 100 + 100
+    print(stock)    # &lt;property object at 0x103811c78&gt;
+</code></pre>
+
+<p>上面的代码示例中，print(stock)的打印结果是<code>&lt;property object at 0x103811c78&gt;</code>和<code>&lt;function Foo.stock at 0x101a57048&gt;</code>，既，在stock方法上面加上@property之后，stock这个方法变为了property的对象，与第一个print(stock)的<code>&lt;function Foo.stock at 0x101a57048&gt;</code>不同。</p>
+<p>接下来，我们的目的是通过descriptor来实现自定义property。</p>
+<p>在实现自定义property之前，我们先假设有一个类，如下代码所示：</p>
+<pre><code>class Foo(object):
+    def stock(self):
+        return 100 + 100
+
+
+foo = Foo()
+foo.stock
+</code></pre>
+
+<p>我们已知如下几点：</p>
+<ul>
+<li>装饰器语法糖 @property等价于  stock = property(stock)；</li>
+<li>描述符是一个类的实例化对象，如 bar = Bar()，然后在Bar这个类中定义了<code>__get__, __set__, __delete__</code>；</li>
+</ul>
+<p>我们的目的是，通过类似属性访问的方式(foo.stock)而非方法调用的方式(foo.stock())，获得返回值200。首选，我们通过描述符的方式，来实现简单的属性访问，如下代码所示：</p>
+<pre><code>class Stock(object):
+    def __get__(self, instance, owner):
+        print(&quot;__get__&quot;)
+        return 100 + 100
+
+
+class Foo(object):
+    stock = Stock()
+
+
+foo = Foo()
+foo.stock
+</code></pre>
+
+<p>此时，通过访问foo.stock会先打印<code>__get__</code>, 然后显示200。那么，如果我们将stock变为类中的一个方法呢？如下代码所示：</p>
+<pre><code>class Stock(object):
+    def __get__(self, instance, owner):
+        print(&quot;__get__&quot;)
+        return 100 + 100
+
+
+class Foo(object):
+    def stock(self):
+        print(&quot;stock&quot;)
+</code></pre>
+
+<p>如果能将stock方法变为一个descriptor，那么我们就可以通过foo.stock访问该descriptor的<code>__get__</code>方法，然后获取其返回值，既，200。</p>
+<p>我们知道，将属性变为descriptor，直接通过给该属性绑定<code>__get__</code>方法即可，如：stock = Stock()，但是，如何利用装饰器语法糖呢？我们知道，装饰器语法糖@Stock等价于stock = Stock(stock)，因此，我们需要，在Stock这个类中定义一个<code>__init__</code>方法，并定义一个形参来接收Stock类实例化时传入的stock函数，如下代码所示：</p>
+<pre><code>class Stock(object):
+    def __init__(self, stock):
+        self.stock = stock
+
+    def __get__(self, instance, owner):
+        print(&quot;__get__&quot;)
+        return 100 + 100
+
+
+class Foo(object):
+    @Stock    # stock = Stock(stock)
+    def stock(self):
+        print(&quot;stock&quot;)
+</code></pre>
+
+<p>通过以上代码，我们就将Foo类中的stock方法，成功的变成了一个descriptor，接下来我们可以通过Foo类的实例化对象来访问stock方法，并且使用普通的属性调用方法，因为此时Foo类中的stock方法已经是一个descriptor了。</p>
+<pre><code>foo = Foo()
+foo.stock
+</code></pre>
+
+<p>以上代码会先打印<code>__get__</code>, 然后显示200。</p>
+<p>事实上，细心的同学会发现，如果采用这种实现方式，我们实现了自定义的property，但是，与官方正版的property还有差距，这个差距在于，访问foo.stock的时候，Foo类中的stock并没有被执行，而正版的property中的属性是被执行了的，也就是说，我们最后需要获取的值，是直接从该属性中计算来获得的，如下代码所示：</p>
+<pre><code>class Foo(object):
+    @property
+    def stock(self):
+        return 100 + 100
+
+
+foo = Foo()
+foo.stock
+</code></pre>
+
+<p>在上面的代码示例中，我们通过foo.stock获取到的结果200，是通过Foo类中的stock这个方法来计算获得的。如果我希望在自定义的property中也采用同样的方式，该如何做呢？</p>
+<p>我们知道，在定义<code>__get__</code>方法时，它接受三个参数，第一个self表示descriptor，下面我们，分别print第二个和第三个参数，看看它们分别表示什么：</p>
+<pre><code>class Stock(object):
+    def __init__(self, stock):
+        self.stock = stock
+
+    def __get__(self, instance, owner):
+        print(&quot;__get__&quot;)
+        print(&quot;instance: &quot;, instance)
+        print(&quot;owner:&quot;, owner)
+        return 100 + 100
+
+
+class Foo(object):
+    @Stock
+    def stock(self):
+        print(&quot;stock&quot;)
+
+
+foo = Foo()
+foo.stock
+</code></pre>
+
+<p>以上代码的执行结果如下：</p>
+<pre><code>__get__
+instance:  &lt;__main__.Foo object at 0x106c2b9b0&gt;
+owner: &lt;class '__main__.Foo'&gt;
+200
+</code></pre>
+
+<p>从以上代码的执行结果可以看出，instance和owner这两个形参，分别被传入了foo和Foo这两个对象，一个是Foo类的实例化对象，一个是Foo类本身，那么，我们是否可以使用foo或者Foo在<code>__get__</code>方法中，调用stock呢？</p>
+<p>答案是否定的，因为此时的stock已经是一个descriptor了，如果在<code>__get__</code>方法中调用，那么就进入死循环了，一直重复的执行<code>__get__</code>方法。</p>
+<p>最原始的那个Foo类中的stock方法，在进行@Stock时，被传入了Stock类中的<code>__init__</code>方法进行初始化，因此，此时我们只能通过如下代码示例中使用的方式，进行调用：</p>
+<pre><code>class Stock(object):
+    def __init__(self, stock):
+        self.stock = stock
+
+    def __get__(self, instance, owner):
+        return self.stock(instance)
+
+
+class Foo(object):
+    @Stock
+    def stock(self):
+        return 100 + 100
+
+
+foo = Foo()
+foo.stock
+</code></pre>
+
+<p>以上代码的执行结果如下：</p>
+<pre><code>200
+</code></pre>
+
+<p>通过结果我们可以看出，与之前的执行结果是一致的。简单修改为更能理解的代码示例，如下所示：</p>
+<pre><code>class myproperty(object):
+    def __init__(self, stock):
+        self.stock = stock
+
+    def __get__(self, instance, owner):
+        return self.stock(instance)
+
+
+class Foo(object):
+    @myproperty
+    def stock(self):
+        return 100 + 100
+
+
+foo = Foo()
+foo.stock
+</code></pre>
+
+<p>至此，我们实现了自定义的property。</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../copy/" class="btn btn-neutral float-right" title="10 Python中的深拷贝与浅拷贝">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../闭包装饰器/" class="btn btn-neutral" title="08 闭包与装饰器"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../闭包装饰器/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../copy/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+
+</body>
+</html>

@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>04 Python中原生socket的案例 - Python服务端入门与进阶指南</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "04 Python\u4e2d\u539f\u751fsocket\u7684\u6848\u4f8b";
+    var mkdocs_page_input_path = "python\u8fdb\u9636/socket\u7f16\u7a0b.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Python服务端入门与进阶指南</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Python重要操作与实践总结</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../重要操作/up/">01 Python需求与提高篇</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../重要操作/compile/">02 py源文件编译</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../typical_case/">03 重要操作总结</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Python常用数据类型汇集</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../python基础/list/">01 列表list</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/dict/">02 字典dict</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/tuple/">03 元组tuple</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/字符串/">04 字符串str</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/set/">05 集合set</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/数字/">06 数字类型</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Python内置函数与常用模块介绍</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../python基础/内置函数/">01 常用内置函数</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/异常/">02 异常处理</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/os模块/">03 os模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/sys模块/">04 sys模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/time模块/">05 time模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/序列化模块/">06 序列化模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/string/">07 string模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/random/">08 random模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/logging/">09 logging模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/optparse/">10 optparse模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/datetime模块/">11 datetime与dateutil模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/collections/">12 collections模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/加密解密/">13 加密与解密模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/configparser/">14 configparser模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/re模块/">15 正则表达式与re模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/操作excel/">16 Python3操作Excel</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/pymysql/">17 操作数据库pymysql模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/SQLAlchemy/">18 操作数据库SQLAlchemy模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/hmac/">19 校验客户端的合法性hmac模块</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Python进阶-面向对象-网编并发</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../面向对象/">01 进阶知识点与面向对象整合</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../生成器/">02 迭代器与生成器</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../网编并发/">03 网络编程与并发编程</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">04 Python中原生socket的案例</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#sendsendall">send与sendall</a></li>
+    
+
+    <li class="toctree-l3"><a href="#socket">简单的socket客户端与服务端</a></li>
+    
+
+    <li class="toctree-l3"><a href="#tcp">TCP模型</a></li>
+    
+
+    <li class="toctree-l3"><a href="#udp">UDP模型</a></li>
+    
+
+    <li class="toctree-l3"><a href="#tcp_1">基于TCP的登陆—用到反射</a></li>
+    
+
+    <li class="toctree-l3"><a href="#udp_1">基于UDP的聊天—加标识</a></li>
+    
+
+    <li class="toctree-l3"><a href="#_1">粘包的解决—传大文件的实例</a></li>
+    
+
+    <li class="toctree-l3"><a href="#socketserver">并发的socketserver</a></li>
+    
+
+    <li class="toctree-l3"><a href="#socket_1">基于原生socket实现的登陆与大文件加密上传实例</a></li>
+    
+
+    <li class="toctree-l3"><a href="#socketserver_1">基于socketserver的并发的文件上传实例</a></li>
+    
+
+    <li class="toctree-l3"><a href="#_2">上传+下载+生成器</a></li>
+    
+
+    <li class="toctree-l3"><a href="#ftp">自己实现的一个单进程的FTP服务器</a></li>
+    
+
+    </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../并发编程提升/">05 Python并发编程提升篇</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../文件操作/">06 文件操作</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../with/">07 with上下文</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../闭包装饰器/">08 闭包与装饰器</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../描述符/">09 Python中的描述符</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../copy/">10 Python中的深拷贝与浅拷贝</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../asyncio/">11 Python协程基础</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../asyncio2/">12 Python协程详解与进阶</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../asyncio3/">13 asyncio并发编程进阶</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Python实现算法与数据结构</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../算法数据结构/">01 python实现算法与数据结构</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">开发环境-中间件等工具</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../缓存与redis/">01 缓存与redis</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../Github与虚拟环境/">02 Github与虚拟环境的使用</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../远程调试/">03 Pycharm连接远程代码</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../压测/">04 Mac/Linux压力测试神器Siege</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Linux服务端相关</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../linux/">01 Linux服务端相关</a>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Python服务端入门与进阶指南</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Python进阶-面向对象-网编并发 &raquo;</li>
+        
+      
+    
+    <li>04 Python中原生socket的案例</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h3 id="sendsendall">send与sendall</h3>
+<p>官方文档对socket模块下的socket.send()和socket.sendall()解释如下：</p>
+<p>socket.send(string[, flags])
+Send data to the socket. The socket must be connected to a remote socket. 
+The optional flags argument has the same meaning as for recv() above. Returns the number of bytes sent. 
+Applications are responsible for checking that all data has been sent; if only some of the data was transmitted, 
+the application needs to attempt delivery of the remaining data.</p>
+<p>send()的返回值是发送的字节数量，这个数量值可能小于要发送的string的字节数，也就是说可能无法发送string中所有的数据。
+如果有错误则会抛出异常。</p>
+<pre><code class="python">socket.sendall(string[, flags])
+</code></pre>
+
+<p>Send data to the socket. The socket must be connected to a remote socket. 
+The optional flags argument has the same meaning as for recv() above. Unlike send(), 
+this method continues to send data from string until either all data has been sent or an error occurs. 
+None is returned on success. On error, an exception is raised, and there is no way to determine how much data, 
+if any, was successfully sent.</p>
+<p>尝试发送string的所有数据，成功则返回None，失败则抛出异常。</p>
+<p>故，下面两段代码是等价的：</p>
+<pre><code class="python"># 1、sendall
+sock.sendall('Hello world\n')
+
+# 2、send
+buffer = 'Hello world\n'
+while buffer:
+    bytes = sock.send(buffer)
+    buffer = buffer[bytes:]
+</code></pre>
+
+<h3 id="socket">简单的socket客户端与服务端</h3>
+<pre><code class="python">'''# client'''
+# -*- coding:utf-8 -*-
+import socket
+
+sk = socket.socket()
+# 对方服务器的ip地址与端口号
+sk.connect(('192.168.16.166',8004))
+while 1:
+    send = input('&gt;&gt;&gt;:').strip()
+    if not send:
+        continue
+    elif send.upper() == 'Q':
+        # 退出前给sever端发信号 让他也关闭
+        sk.send(send.encode('utf-8'))
+        print('连接关闭！')
+        break
+    sk.send(send.encode('utf-8'))
+    msg = sk.recv(1024).decode('utf-8')
+    if msg.upper() == 'Q':
+        print('连接关闭！')
+        break
+    print('服务器端数据：',msg)
+
+sk.close()
+
+'''# server'''
+# -*- coding:utf-8 -*-
+import socket
+
+sk = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# 在绑定前调用setsockopt让套接字允许地址重复利用
+sk.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+# 本机的ip地址与端口号
+sk.bind(('192.168.16.79',9001))
+sk.listen(100)
+print('正在等待客户端发来信息......')
+conn,addr = sk.accept()
+while 1:
+    # 客户端强制关闭时会抛出异常，所以用异常处理
+    try:
+        ## 通信循环
+        msg = conn.recv(1024).decode('utf-8')
+        if msg.upper() == 'Q':
+            print('连接关闭！')
+            break
+        print('客户端数据：',msg)
+        send = input('&gt;&gt;&gt;::').strip()
+        if not send:
+            continue
+        if send.upper() == 'Q':
+            # 退出前给client端发信号，让他也关闭
+            conn.send(send.encode('utf-8'))
+            print('连接关闭！')
+            break
+        conn.send(send.encode('utf-8'))
+    except ConnectionResetError:
+        print('客户端强制退出程序，连接关闭！')
+        break
+
+conn.close()
+sk.close()
+
+'''
+# 说明
+总是client端先发送数据，而server端先接受数据的；
+server端启动后总是在监听客户端的连接信息，因此server起初都是先接受数据的，
+而且一开始让server端发送的话他也不知道目标在哪里。
+'''
+</code></pre>
+
+<h3 id="tcp">TCP模型</h3>
+<pre><code class="python">'''# client'''
+# -*- coding:utf-8 -*-
+import socket
+
+sk_client = socket.socket()
+sk_client.connect(('127.0.0.1',9000))
+while 1:
+    rec = sk_client.recv(1024).decode('utf-8')
+    # 服务端主动断开链接
+    if rec.upper() == 'Q':
+        break
+    print('服务器数据：%s'%rec)
+    msg = input('&gt;&gt;&gt;:').strip()
+    #如果输入Q 直接退出 也不给server发送信息了
+    if msg.upper() == 'Q':
+        break
+    sk_client.send(msg.encode('utf-8'))
+
+
+'''# server'''    
+# -*- coding:utf-8 -*-
+import socket
+
+sk_server = socket.socket()
+sk_server.bind(('127.0.0.1',9000))
+sk_server.listen()
+print('Listening......')
+while 1:
+    conn,addr = sk_server.accept()
+    while 1:
+        msg = input('&gt;&gt;&gt;').strip()
+        conn.send(msg.encode('utf-8'))
+        # 服务器主动跟正在通信的客户端关闭连接
+        if msg.upper() == 'Q':
+            break
+        ret = conn.recv(1024).decode('utf-8')
+        print('客户端 %s 数据：%s'%(addr,ret))
+    conn.close()
+# 服务器7*24小时运行，所以这里不关闭服务器
+</code></pre>
+
+<h3 id="udp">UDP模型</h3>
+<pre><code class="python">'''# client'''
+# -*- coding:utf-8 -*-
+import socket
+
+sk_client = socket.socket(type=socket.SOCK_DGRAM)
+server_addr = ('127.0.0.1',9000)
+
+while 1:
+    cout = input('&gt;&gt;&gt;:').strip()
+    # 即使输入q 也要发给服务器 服务器端有判断-你跟他断开了连接
+    sk_client.sendto(cout.encode('utf-8'),server_addr)
+    if cout.upper() == 'Q':
+        break
+    print('给服务器发送了信息：%s'%cout)
+    msg = sk_client.recv(1024).decode('utf-8')
+    if msg.upper() == 'Q':
+        break
+    print('从服务器端接收到数据：%s'%msg)
+
+sk_client.close()
+
+
+'''# server'''
+# -*- coding:utf-8 -*-
+import socket
+
+sk_server = socket.socket(type=socket.SOCK_DGRAM)
+sk_server.bind(('127.0.0.1',9000))
+
+while 1:
+    msg,c_addr = sk_server.recvfrom(1024)
+    if msg.decode('utf-8').upper() == 'Q':
+        ## 注意这里有一个元组的坑！
+        print('客户端 %s 与你断开了连接'%(c_addr,))
+        continue
+    print('从客户端 %s 收到消息：%s'%(c_addr,msg.decode('utf-8')))
+    cout = input('&gt;&gt;&gt;:')
+    sk_server.sendto(cout.encode('utf-8'),c_addr)
+    if cout.upper() == 'Q':
+        # ## 注意这里有一个元组的坑！
+        print('已给客户端 %s 发送断开连接指令'%(c_addr,))
+        continue
+    print('给客户端 %s 发送了信息：%s'%(c_addr,cout))
+    # 服务器不停止 所以不给他close
+</code></pre>
+
+<h3 id="tcp_1">基于TCP的登陆—用到反射</h3>
+<pre><code class="python">'''# client'''
+# -*- coding:utf-8 -*-
+import json
+import socket
+
+count = 0
+while count &lt; 3:
+    username = input('用户名：').strip()
+    password = input('密 码：').strip()
+
+    sk_client = socket.socket()
+    sk_client.connect(('127.0.0.1',9005))
+
+    dic = {
+        'operate':'login',
+        'username':username,
+        'password':password,
+    }
+
+    # 用json变成str类型的 方便网络传输
+    str_dic = json.dumps(dic)
+    bytes_dic = str_dic.encode('utf-8')
+    sk_client.send(bytes_dic)
+    # 从服务器端接收结果
+    str_dic_res = sk_client.recv(1024).decode('utf-8')
+    dic_res = json.loads(str_dic_res)
+
+    if dic_res['result']:
+        print('登陆成功！')
+        sk_client.close()
+        break
+    else:
+        print('登录失败！')
+    sk_client.close()
+
+
+
+'''# server'''
+# -*- coding:utf-8 -*-
+import sys
+import json
+import socket
+import hashlib
+
+def get_md5(username,password):
+    md5 = hashlib.md5(username.encode('utf-8'))
+    md5.update(password.encode('utf-8'))
+    return md5.hexdigest()
+
+def login(dic):
+    with open('userinfo','r')as f:
+        for line in f:
+            usr,pwd = line.strip().split('|')
+            if usr == dic['username'] and pwd == get_md5(dic['username'],dic['password']):
+                return {'operate':'login','result':True}
+        else:
+            return {'operate':'login','result':False}
+
+if __name__ == '__main__':
+
+    sk_server = socket.socket()
+    sk_server.bind(('127.0.0.1',9005))
+    sk_server.listen()
+    print('等待客户端建立连接......')
+
+    while 1:
+        conn,addr = sk_server.accept()
+        str_dic = conn.recv(1024).decode('utf-8')
+        dic = json.loads(str_dic)
+        # 反射
+        if hasattr(sys.modules[__name__],dic['operate']):
+            l = getattr(sys.modules[__name__],dic['operate'])
+            ret = l(dic)
+            bytes_ret = json.dumps(ret).encode('utf-8')
+            conn.send(bytes_ret)
+        conn.close()
+    # 模拟server端不down机 下面不会执行
+    sk_server.close()
+</code></pre>
+
+<h3 id="udp_1">基于UDP的聊天—加标识</h3>
+<pre><code class="python">'''# client'''
+# -*- coding:utf-8 -*-
+import json
+import socket
+
+sk_client = socket.socket(type=socket.SOCK_DGRAM)
+server_addr = ('127.0.0.1',9112)
+code = 1234
+while 1:
+    content = input('&gt;&gt;&gt;:').strip()
+    if not content:
+        continue
+    if content.upper() == 'Q':
+        break
+    dic = {'code':code,'content':content}
+    str_dic = json.dumps(dic)
+    sk_client.sendto(str_dic.encode('utf-8'),server_addr)
+
+    recv = sk_client.recv(1024).decode('utf-8')
+    if recv.upper() == 'Q':
+        break
+    print(recv)
+
+sk_client.close()
+
+
+'''# server'''
+# -*- coding:utf-8 -*-
+import json
+import socket
+
+sk_server = socket.socket(type=socket.SOCK_DGRAM)
+sk_server.bind(('127.0.0.1',9112))
+
+user_info = {
+    1234:('whw','\033[1;32m'),
+    5678:('wanghw','\033[1;31m'),
+}
+
+while 1:
+    msg,addr = sk_server.recvfrom(1024)
+    str_msg = msg.decode('utf-8')
+    dic_msg = json.loads(str_msg)
+
+    code = dic_msg['code']
+    content = dic_msg['content']
+    print('%s%s:%s'%(user_info[code][1],user_info[code][0],content))
+
+    ret = input('&gt;&gt;&gt;:').strip()
+    sk_server.sendto(ret.encode('utf-8'),addr)
+## 服务器不down机
+sk_server.close()
+</code></pre>
+
+<h3 id="_1">粘包的解决—传大文件的实例</h3>
+<pre><code class="python">'''# client'''
+# -*- coding:utf-8 -*-
+import os
+import socket
+import struct
+import json
+
+sk = socket.socket()
+sk.connect(('127.0.0.1',9001))
+
+filepath = input('&gt;&gt;&gt;:').strip()
+filename = os.path.basename(filepath)
+filesize = os.path.getsize(filepath)
+
+dic = {'filename':filename,'filesize':filesize}
+str_dic = json.dumps(dic)
+bytes_dic = str_dic.encode('utf-8')
+num = struct.pack('i',len(bytes_dic))
+
+sk.send(num)
+sk.send(bytes_dic)
+
+with open(filepath,'rb')as f:
+    while filesize &gt; 2048:
+        content = f.read(2048)
+        sk.send(content)
+        filesize -= 2048
+    else:
+        content = f.read(2048)
+        if content:
+            sk.send(content)
+
+sk.close()
+
+
+
+'''# server'''
+# -*- coding:utf-8 -*-
+import socket
+import struct
+import json
+
+sk = socket.socket()
+sk.bind(('127.0.0.1',9001))
+sk.listen()
+print('Listening...')
+
+conn,addr = sk.accept()
+
+bytes_num = conn.recv(4)
+num = struct.unpack('i',bytes_num)[0]
+str_dic = conn.recv(num).decode('utf-8')
+dic = json.loads(str_dic)
+
+filename = dic['filename']
+filesize = dic['filesize']
+
+with open(filename,'wb')as f:
+    while filesize:
+        content = conn.recv(2048)
+        f.write(content)
+        ## 收端出问题的几率大！由于有“拆包”，因此收到的不一定是2048个字节！
+        ## 这里每次减去收到的content的长度！
+        filesize -= len(content)
+    else:
+        content = conn.recv(2048)
+        if content:
+            f.write(content)
+</code></pre>
+
+<h3 id="socketserver">并发的socketserver</h3>
+<pre><code class="python">'''client'''
+# -*- coding:utf-8 -*-
+import socket
+
+client = socket.socket()
+client.connect(('127.0.0.1',9000))
+
+while 1:
+    try:
+        msg = client.recv(1024).decode('utf-8')
+        print(msg)
+        client.send('client1'.encode('utf-8'))
+    except Exception as e:
+        print(e)
+        break
+client.close()
+
+
+'''server'''
+# -*- coding:utf-8 -*-
+import socketserver
+import  time
+
+# 必须继承这个父类
+class Myserver(socketserver.BaseRequestHandler):
+    # 必须有一个叫handle的方法
+    def handle(self):
+        conn = self.request
+        # 对于 “并发的文件上传” 这样做是互不影响的！
+        for i in range(200):
+            conn.send(('hello%s'%i).encode('utf-8'))
+            msg = conn.recv(1024)
+            print(msg)
+            time.sleep(0.5)
+
+if __name__ == '__main__':
+    # 格式是固定的
+    # 第一个参数是绑定的ip与端口 第二个参数是自己的类
+    server_obj = socketserver.ThreadingTCPServer(('127.0.0.1',9001),Myserver)
+    server_obj.serve_forever()
+</code></pre>
+
+<h3 id="socket_1">基于原生socket实现的登陆与大文件加密上传实例</h3>
+<p><strong>目录结构如下</strong></p>
+<pre><code class="python">-client_files
+-server_files
+-client.py
+-server.py
+-userinfo
+</code></pre>
+
+<p><strong>client端</strong></p>
+<pre><code class="python"># -*- coding:utf-8 -*-
+import os
+import sys
+import json
+import struct
+import socket
+import hashlib
+
+# 进度条
+def progress_bar(total_size, current_percent=0, last_percent=0):
+    '''进度条功能'''
+    while 1:
+        received_size = yield current_percent
+        current_percent = int(received_size / total_size * 100)
+        if current_percent &gt; last_percent:
+            print(&quot;*&quot; * int(current_percent / 2) + &quot;{percent}%&quot;.format(percent=current_percent), end='\r',
+                  flush=True)
+            # 把本次循环的percent赋值给last
+            last_percent = current_percent
+
+
+# 大文件的MD5
+def get_file_md5(filepath):
+    filesize = os.path.getsize(filepath)
+    md5 = hashlib.md5()
+    with open(filepath,'rb')as f:
+        while filesize &gt; 1024:
+            content = f.read(1024)
+            md5.update(content)
+            filesize -= 1024
+        else:
+            content = f.read()
+            if content:
+                md5.update(content)
+    return md5.hexdigest()
+
+
+# 先登录 登录成功后再进行文件的上传
+def login(username,password,client):
+    dic = {'operate':'login','username':username,'password':password}
+    str_dic = json.dumps(dic)
+    bytes_dic = str_dic.encode('utf-8')
+    num_dic = struct.pack('i',len(bytes_dic))
+    # 发送字节字典的长度及字节字典
+    client.send(num_dic)
+    client.send(bytes_dic)
+    # 接收返回的信息 {'operate':'login','result':True}
+    # 先接受字典信息
+    num_ret = client.recv(4)
+    num = struct.unpack('i',num_ret)[0]
+    str_ret = client.recv(num).decode('utf-8')
+    ret_dic = json.loads(str_ret)
+    # 登录成功的话，upload还会利用资源，这里不关闭
+    if ret_dic['result']:
+        return True
+    else:
+        # 登陆失败记得关闭资源
+        client.close()
+        return False
+
+
+def upload(client):
+    print('upload...')
+    filepath = input('请输入你要上传的文件路径：').strip()
+    filename = os.path.basename(filepath)
+    filesize = os.path.getsize(filepath)
+    # 文件的MD5
+    file_md5 = get_file_md5(filepath)
+    # 建字典、传字典
+    dic = {'filename':filename,'filesize':filesize,'file_md5':file_md5}
+    str_dic = json.dumps(dic)
+    bytes_dic = str_dic.encode('utf-8')
+    num_dic = struct.pack('i',len(bytes_dic))
+    # 发送字典信息及字典
+    client.send(num_dic)
+    client.send(bytes_dic)
+    # 开始发送文件
+    with open(filepath,'rb')as f:
+        while filesize &gt; 1024:
+            content = f.read(1024)
+            client.send(content)
+            filesize -= 1024
+        else:
+            content = f.read()
+            if content:
+                client.send(content)
+    # 最后关闭资源
+    client.close()
+    print('文件 %s 上传完成！'%filename)
+
+
+def download(client):
+    print('download...')
+
+    filename = input('请输入你要下载的文件名：').strip()
+    filepath = os.path.join('client_files',filename)
+    # 文件名传给server
+    client.send(filename.encode('utf-8'))
+    # 从server端收结果，如果有这个文件就进行操作 {'filesize':filesize,'file_md5':file_md5}
+    ret_str = client.recv(1024).decode('utf-8')
+    ret_dic = json.loads(ret_str)
+    if ret_dic['filesize'] and ret_dic['file_md5']:
+        filesize = ret_dic['filesize']
+        file_md5 = ret_dic['file_md5']
+
+        # 进度条
+        progress_generator = progress_bar(filesize)
+        progress_generator.__next__()
+        recv_size = 0
+        total = filesize
+
+        with open(filepath,'wb')as f:
+            while  filesize &gt; 1024:
+                content = client.recv(1024)
+                f.write(content)
+                # 注意 每次长度是 len(content)
+                # 因为接收的不一定是1024长度 可能会小于这个值
+                filesize -= len(content)
+                recv_size += 1024
+                # 打印进度条
+                progress_generator.send(recv_size)
+
+            else:
+                content = client.recv(1024)
+                if content:
+                    f.write(content)
+                print('---文件 [%s] 接收完成！总大小 [%s]---' % (filename, total))
+        client.close()
+        # md5校验
+        if get_file_md5(filepath) == file_md5:
+            print('文件传输完成，校验后无误！')
+        else:
+            print('请注意！文件略有损坏哦~')
+
+    else:
+        print('服务端没有这个文件！')
+        client.close()
+
+
+
+
+if __name__ == '__main__':
+    # 操作的字典 反射用
+    operate_dic = {
+        '1':['upload','上传文件到服务器'],
+        '2':['download','从服务器端下载文件'],
+    }
+
+    username = input('用户名：').strip()
+    password = input('密码：').strip()
+    # 创建socket的资源
+    sk_client = socket.socket()
+    sk_client.connect(('127.0.0.1', 9000))
+
+    res = login(username,password,sk_client)
+    # 如果登录成功就开始选择上传还是下载
+    if res:
+        print('登陆成功！请选择你要进行的操作：')
+        for i in operate_dic:
+            print(i,':',operate_dic[i][1])
+        choice = input('请选择操作的序号：').strip()
+        # 反射
+        if hasattr(sys.modules[__name__],operate_dic[choice][0]):
+            # 注意，把client端要进行的操作发给server端，让他做好对应的操作！
+            operate_str = operate_dic[choice][0]
+            sk_client.send(operate_str.encode('utf-8'))
+            # 然后client端进行对应的操作
+            method = getattr(sys.modules[__name__],operate_dic[choice][0])
+            method(sk_client)
+        else:
+            print('请输入正确的操作序号！')
+    else:
+        print('登陆失败！')
+
+</code></pre>
+
+<p><strong>server端</strong></p>
+<pre><code class="python"># -*- coding:utf-8 -*-
+import os
+import sys
+import json
+import struct
+import socket
+import hashlib
+
+def get_md5(username,password):
+    md5 = hashlib.md5(username.encode('utf-8'))
+    md5.update(password.encode('utf-8'))
+    return md5.hexdigest()
+
+
+# 大文件的MD5
+def get_file_md5(filepath):
+    filesize = os.path.getsize(filepath)
+    md5 = hashlib.md5()
+    with open(filepath,'rb')as f:
+        while filesize &gt; 1024:
+            content = f.read(1024)
+            md5.update(content)
+            filesize -= 1024
+        else:
+            content = f.read()
+            if content:
+                md5.update(content)
+    return md5.hexdigest()
+
+
+def login(username,password):
+    ## whw  123
+    with open('userinfo','r',encoding='utf-8')as f:
+        for line in f:
+            user,pwd = line.strip().split('|')
+            if user == username and pwd == get_md5(username,password):
+                return {'operate':'login','result':True}
+            else:
+                return {'operate':'login','result':False}
+
+
+def upload(conn):
+    print('upload...')
+    # 接收字典的长度与字典
+    num_dic = conn.recv(4)
+    num = struct.unpack('i',num_dic)[0]
+    str_dic = conn.recv(num).decode('utf-8')
+    dic = json.loads(str_dic)
+    # 得到相关信息
+    filename = dic['filename']
+    filesize = dic['filesize']
+    # 开始接收文件
+    with open(filename,'wb')as f:
+        while filesize &gt; 1024:
+            content = conn.recv(1024)
+            f.write(content)
+            # 注意每次收到不一定是1024！
+            # 因此这里用content的长度做减法！
+            filesize -= len(content)
+        else:
+            content = conn.recv(1024)
+            if content:
+                f.write(content)
+    # 进行文件的MD5校验
+    file_md5 = get_file_md5(filename)
+    if file_md5 == dic['file_md5']:
+        print('文件 %s 上传成功！校验无误!' % filename)
+    # 最后记得关闭资源
+    conn.close()
+
+
+def download(conn):
+    print('download...')
+    # 从client端接收文件名
+    filename = conn.recv(1024).decode('utf-8')
+    file_path = os.path.join('server_files', filename)
+    filesize = None
+    if filename in os.listdir('server_files'):
+        filesize = os.path.getsize(file_path)
+        file_md5 = get_file_md5(file_path)
+        dic = {'filesize': filesize, 'file_md5': file_md5}
+    else:
+        dic = {'filesize':None,'file_md5':None}
+    # 把这个字典传给client，让它确认是否可以进行下载了
+    str_dic = json.dumps(dic)
+    conn.send(str_dic.encode('utf-8'))
+    # 如果有这个文件表示可以下载了，server开始给他传
+    if dic['filesize'] and dic['file_md5']:
+        with open(file_path,'rb')as f:
+            while filesize &gt; 1024:
+                content = f.read(1024)
+                conn.send(content)
+            else:
+                content = f.read()
+                if content:
+                    conn.send(content)
+        # 最后记得关闭conn
+        conn.close()
+    else:
+        print('客户端 %s 试图下载文件失败'%(addr,))
+        conn.close()
+
+
+if __name__ == '__main__':
+    server = socket.socket()
+    server.bind(('127.0.0.1',9000))
+    server.listen()
+    print('listening......')
+    while 1:
+        conn,addr = server.accept()
+        # 先收字典长度再收字典
+        bytes_num = conn.recv(4)
+        num = struct.unpack('i',bytes_num)[0]
+        str_dic = conn.recv(num).decode('utf-8')
+        dic = json.loads(str_dic)
+        ret = login(dic['username'],dic['password'])
+        # 返回给client
+        str_ret = json.dumps(ret)
+        bytes_ret = str_ret.encode('utf-8')
+        num_ret = struct.pack('i',len(bytes_ret))
+        # 先发字节字典的长度再发字节字典
+        conn.send(num_ret)
+        conn.send(bytes_ret)
+
+        # 登陆成功upload与download还会用到conn，先不关闭
+        if ret['result']:
+            #从client端收一下 到底是进行什么操作吧
+            str_operate = conn.recv(1024).decode('utf-8')
+            # 用反射获取
+            if hasattr(sys.modules[__name__],str_operate):
+                method = getattr(sys.modules[__name__],str_operate)
+                method(conn)
+        else:
+            # 注意这里是单个元组的传参！
+            print('客户端 %s 登录失败'%(addr,))
+            # 登录失败的话断开当前连接
+            conn.close()
+</code></pre>
+
+<h3 id="socketserver_1">基于socketserver的并发的文件上传实例</h3>
+<pre><code class="python">'''client'''
+# -*- coding:utf-8 -*-
+import os
+import json
+import struct
+import socket
+
+
+filepath = input('请输入文件路径：').strip()
+filename = os.path.basename(filepath)
+filesize = os.path.getsize(filepath)
+# 构建字典 并 求出传输所需的参数
+dic = {'filename':filename,'filesize':filesize}
+str_dic = json.dumps(dic)
+bytes_dic = str_dic.encode('utf-8')
+num_dic = struct.pack('i',len(bytes_dic))
+# 准备并传输
+sk_client = socket.socket()
+sk_client.connect(('127.0.0.1',9000))
+sk_client.send(num_dic)
+sk_client.send(bytes_dic)
+# 开始上传文件
+with open(filepath,'rb')as f:
+    while filesize &gt; 1024:
+        content = f.read(1024)
+        sk_client.send(content)
+        filesize -= 1024
+    else:
+        content = f.read()
+        if content:
+            sk_client.send(content)
+# 关闭资源
+sk_client.close()
+
+
+'''server'''
+# -*- coding:utf-8 -*-
+import json
+import struct
+import socketserver
+
+class MyServer(socketserver.BaseRequestHandler):
+    def handle(self):
+        while 1:
+            conn = self.request
+            # 接收带信息的字典 先接收长度
+            num_dic = conn.recv(4)
+            # 注意取到的是元组 需要取索引为0的元素才能拿到数字！
+            num = struct.unpack('i',num_dic)[0]
+            str_dic = conn.recv(num).decode('utf-8')
+            dic = json.loads(str_dic)
+            filename = dic['filename']
+            filesize = dic['filesize']
+            # 开始接收数据
+            with open(filename,'wb')as f:
+                while filesize &gt; 1024:
+                    content = conn.recv(1024)
+                    f.write(content)
+                    # 注意 收到的不一定是1024长度 因此这里每次减content的长度
+                    filesize -= len(content)
+                else:
+                    # 每次收到不一定是1024 因此这里每次减content的长度
+                    content = conn.recv(1024)
+                    if content:
+                        f.write(content)
+            conn.close()
+
+if __name__ == '__main__':
+    ser_obj = socketserver.ThreadingTCPServer(('127.0.0.1',9000),MyServer)
+    ser_obj.serve_forever()
+</code></pre>
+
+<h3 id="_2">上传+下载+生成器</h3>
+<p><strong>目录结构</strong></p>
+<pre><code class="python">-download
+-upload
+-client.py
+-server.py
+userinfo
+</code></pre>
+
+<p><strong>client</strong></p>
+<pre><code class="python"># -*- coding:utf-8 -*-
+import os
+import json
+import socket
+import struct
+
+
+download_path = r'E:\practice\old_boy_all_day\all_days\day31-下载与校验\download'
+
+username = input('username:').strip()
+password = input('password:').strip()
+dic = {'username':username,'password':password,'opt':'login'}
+
+str_dic = json.dumps(dic)
+bytes_dic = str_dic.encode('utf-8')
+num_dic = struct.pack('i',len(bytes_dic))
+
+sk = socket.socket()
+sk.connect(('127.0.0.1',9001))
+
+sk.send(num_dic)
+sk.send(bytes_dic)
+
+str_ret = sk.recv(1024).decode('utf-8')
+ret_dic = json.loads(str_ret)
+if ret_dic['flag']:
+    print('登陆成功！')
+else:
+    print('登陆失败！')
+
+#选择 上传 还是 下载
+
+#默认参数！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+# 用自定义协议传字典写一个函数 ############################################################
+def pro_send(sk,dic,pro=True):
+    str_dic = json.dumps(dic)
+    bytes_dic = str_dic.encode('utf-8')
+    if pro:
+        num_dic = struct.pack('i', len(bytes_dic))
+        sk.send(num_dic)
+    sk.send(bytes_dic)
+
+
+
+
+def upload(sk):
+    filepath = input('文件路径：').strip()
+    if os.path.isfile(filepath):
+        filename = os.path.basename(filepath)
+        filesize = os.path.getsize(filepath)
+        dic = {'filename':filename,'filesize':filesize,'operate':'upload'}
+
+        pro_send(sk,dic)       ##################################################################
+
+        with open(filepath,'rb')as f:
+            while filesize &gt; 2048:
+                content = f.read(2048)
+                sk.send(content)
+                filesize -= 2048
+            else:
+                content = f.read()
+                if content:
+                    sk.send(content)
+        print('上传成功！')
+
+
+def pro_recv(conn):  ######################### 根据协议接收###################################
+    num_dic = conn.recv(4)
+    # 注意unpack得到的是元组！！！
+    num = struct.unpack('i', num_dic)[0]
+    str_dic = conn.recv(num).decode('utf-8')
+    dic = json.loads(str_dic)
+    return dic
+
+def download(sk):
+    # 先发送要下载文件的名字
+    # server回复：是否存在，文件大小
+    # 根据文件大小来接收文件 收到的文件存在download文件件下
+    filename = input('文件名：').strip()
+    dic = {'filename': filename,  'operate': 'download'}
+    # 不用自定义协议
+    # 默认参数！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+    pro_send(sk,dic)
+
+    ret = pro_recv(sk)   #   dic = {'filesize':filesize,'exist':True}
+    if ret['exist']:
+        filepath = os.path.join('download',filename)
+        with open(filepath, 'wb')as f:
+            while ret['filesize']:
+                content = sk.recv(2048)
+                f.write(content)
+                ret['filesize'] -= len(content)
+            else:
+                content = sk.recv(2048)
+                if content:
+                    f.write(content)
+        print('下载成功！')
+
+    else:
+        print('文件不存在！')
+
+
+
+operate = [('上传',upload),('下载',download)]
+
+for k,v in enumerate(operate,1):
+    print(k,v[0])
+
+num = input('请输入您要进行的操作：').strip()
+
+opt = operate[int(num)-1][1]
+opt(sk)
+</code></pre>
+
+<p><strong>server</strong></p>
+<pre><code class="python"># -*- coding:utf-8 -*-
+import os
+import sys
+import json
+import struct
+import socket
+import hashlib
+
+
+uploadpath = r'E:\practice\old_boy_all_day\all_days\day31-下载与校验\upload'
+
+
+#默认参数！！！！！！！！
+# 位自定义协议传字典写一个函数 ########
+def pro_send(sk,dic,pro=True):
+    str_dic = json.dumps(dic)
+    bytes_dic = str_dic.encode('utf-8')
+    if pro:
+        num_dic = struct.pack('i', len(bytes_dic))
+        sk.send(num_dic)
+    sk.send(bytes_dic)
+
+
+def pro_recv(conn):  ####### 根据协议接收
+    num_dic = conn.recv(4)
+    # 注意unpack得到的是元组！！！
+    num = struct.unpack('i', num_dic)[0]
+    str_dic = conn.recv(num).decode('utf-8')
+    dic = json.loads(str_dic)
+    return dic
+
+
+def get_md5(username,password):
+    md5 = hashlib.md5(username.encode('utf-8'))
+    md5.update(password.encode('utf-8'))
+    return md5.hexdigest()
+
+def login(conn):
+    num_dic = conn.recv(4)
+    # 注意unpack得到的是元组！！！
+    num = struct.unpack('i', num_dic)[0]
+    str_dic = conn.recv(num).decode('utf-8')
+    dic = json.loads(str_dic)
+    username = dic['username']
+    password = dic['password']
+
+    with open('userinfo', 'r', encoding='utf-8')as f:
+        for line in f:
+            usr, pwd = line.strip().split('|')
+            if usr == username and pwd == get_md5(username, password):
+                return {'opt':'login','flag':True}
+            else:
+                return {'opt': 'login', 'flag': False}
+
+def upload(conn,dic):
+    filepath = os.path.join('upload',dic['filename'])
+
+    with open(filepath,'wb')as f:
+        while dic['filesize']:
+            content = conn.recv(2048)
+            f.write(content)
+            dic['filesize'] -= len(content)
+        else:
+            content = conn.recv(2048)
+            if content:
+                f.write(content)
+
+
+def download(conn,dic):
+    path = os.path.join(uploadpath,dic['filename'])
+    if os.path.isfile(path):
+        filesize = os.path.getsize(path)
+        dic = {'filesize':filesize,'exist':True}
+        # 文件存在
+        # 先发字典 再发文件
+        pro_send(conn,dic)
+
+        with open(path,'rb')as f:
+            while filesize &gt; 2048:
+                content = f.read(2048)
+                conn.send(content)
+                filesize -= 2048
+            else:
+                content = f.read()
+                if content:
+                    conn.send(content)
+    else:
+        # 文件不存在
+        # 先发字典 再结束
+        dic = {'filesize': None, 'exist': True}
+        pro_send(conn, dic)
+        conn.close()
+
+
+
+if __name__ == '__main__':
+
+
+    sk = socket.socket()
+    sk.bind(('127.0.0.1',9001))
+    sk.listen()
+    print('listening......')
+
+    conn,addr = sk.accept()
+
+    ret = login(conn)
+
+    # 可以不自定义协议
+    ret_str = json.dumps(ret)
+    conn.send(ret_str.encode('utf-8'))
+
+    if ret['flag']:
+        # 登陆成功
+        dic = pro_recv(conn)   #################  {'filename':filename,'filesize':filesize,'operate':'upload'} ###############################
+
+        if hasattr(sys.modules[__name__],dic['operate']):
+            method = getattr(sys.modules[__name__],dic['operate'])
+            method(conn,dic)
+
+    else:
+        conn.close()
+
+</code></pre>
+
+<h3 id="ftp">自己实现的一个单进程的FTP服务器</h3>
+<p><a href="https://github.com/Wanghongw/FTP">https://github.com/Wanghongw/FTP</a></p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../并发编程提升/" class="btn btn-neutral float-right" title="05 Python并发编程提升篇">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../网编并发/" class="btn btn-neutral" title="03 网络编程与并发编程"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../网编并发/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../并发编程提升/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+
+</body>
+</html>

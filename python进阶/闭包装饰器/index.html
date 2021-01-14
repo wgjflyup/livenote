@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>08 闭包与装饰器 - Python服务端入门与进阶指南</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "08 \u95ed\u5305\u4e0e\u88c5\u9970\u5668";
+    var mkdocs_page_input_path = "python\u8fdb\u9636/\u95ed\u5305\u88c5\u9970\u5668.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Python服务端入门与进阶指南</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Python重要操作与实践总结</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../重要操作/up/">01 Python需求与提高篇</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../重要操作/compile/">02 py源文件编译</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../typical_case/">03 重要操作总结</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Python常用数据类型汇集</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../python基础/list/">01 列表list</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/dict/">02 字典dict</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/tuple/">03 元组tuple</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/字符串/">04 字符串str</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/set/">05 集合set</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/数字/">06 数字类型</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Python内置函数与常用模块介绍</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../python基础/内置函数/">01 常用内置函数</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/异常/">02 异常处理</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/os模块/">03 os模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/sys模块/">04 sys模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/time模块/">05 time模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/序列化模块/">06 序列化模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/string/">07 string模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/random/">08 random模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/logging/">09 logging模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/optparse/">10 optparse模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/datetime模块/">11 datetime与dateutil模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/collections/">12 collections模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/加密解密/">13 加密与解密模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/configparser/">14 configparser模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/re模块/">15 正则表达式与re模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/操作excel/">16 Python3操作Excel</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/pymysql/">17 操作数据库pymysql模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/SQLAlchemy/">18 操作数据库SQLAlchemy模块</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../python基础/hmac/">19 校验客户端的合法性hmac模块</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Python进阶-面向对象-网编并发</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../面向对象/">01 进阶知识点与面向对象整合</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../生成器/">02 迭代器与生成器</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../网编并发/">03 网络编程与并发编程</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../socket编程/">04 Python中原生socket的案例</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../并发编程提升/">05 Python并发编程提升篇</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../文件操作/">06 文件操作</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../with/">07 with上下文</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">08 闭包与装饰器</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#_1">闭包与装饰器</a></li>
+    
+
+    <li class="toctree-l3"><a href="#_2">装饰器的实际应用</a></li>
+    
+
+    </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../描述符/">09 Python中的描述符</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../copy/">10 Python中的深拷贝与浅拷贝</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../asyncio/">11 Python协程基础</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../asyncio2/">12 Python协程详解与进阶</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../asyncio3/">13 asyncio并发编程进阶</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Python实现算法与数据结构</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../算法数据结构/">01 python实现算法与数据结构</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">开发环境-中间件等工具</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../缓存与redis/">01 缓存与redis</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../Github与虚拟环境/">02 Github与虚拟环境的使用</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../远程调试/">03 Pycharm连接远程代码</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../压测/">04 Mac/Linux压力测试神器Siege</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Linux服务端相关</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../linux/">01 Linux服务端相关</a>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Python服务端入门与进阶指南</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Python进阶-面向对象-网编并发 &raquo;</li>
+        
+      
+    
+    <li>08 闭包与装饰器</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h3 id="_1">闭包与装饰器</h3>
+<p>我的这篇博客将闭包与装饰器与装饰器的实现过程讲述的非常明白了：</p>
+<p><a href="https://www.cnblogs.com/paulwhw/p/8683990.html">Python装饰器的调用过程</a></p>
+<p><a href="https://www.cnblogs.com/paulwhw/articles/10533516.html">一段代码带你理解“带参数的装饰器”</a></p>
+<h3 id="_2">装饰器的实际应用</h3>
+<p>说白了，装饰器其实就是在我们想执行的函数的之前与之后做一些事情。</p>
+<p>下面这篇博客中的技术点使用到了装饰器：</p>
+<p><a href="https://www.cnblogs.com/paulwhw/articles/12498430.html">pymysql链接池、事物的使用浅谈</a></p>
+<p><strong>计算程序执行的时间</strong></p>
+<pre><code class="python">import time
+
+def counter(func):
+    #注意里面必须有*args
+    def inner(*args):
+        start = time.time()
+        #注意这里必须有*args，因为下面的swap函数有2个参数
+        func(*args)
+        stop = time.time()
+        s = '函数 %s 执行时间：%s'%(func.__name__,(stop-start))
+        print(s)
+    return inner
+
+@counter
+def swap(x,y):
+    time.sleep(2)
+    x,y = y,x
+    print(x,y)
+
+if __name__ == '__main__':
+    counter(swap(11,22))
+
+</code></pre>
+
+<p><strong>给函数加上简单的认证逻辑</strong></p>
+<pre><code class="python">'''# 利用不带参数的装饰器 进行登陆认证的小练习'''
+def outer(func):
+    def wrapper(*args,**kwargs):
+        username = input('用户名：').strip()
+        password = input('密码：').strip()
+        if username == 'whw' and password == '123':
+            print('登陆成功！')
+            #登陆成功才能执行func1
+            ret = func()
+            return ret
+        else:
+            print('用户名或者密码错误！')
+
+    return wrapper
+
+@outer # func1 = outer(func1)
+def func1():
+    print('do something...')
+
+if __name__ == '__main__':
+    func1()
+
+'''# 带参数的装饰器 —— 认证成功后不用再认证'''
+login_status = {'name':None,'pwd':False}
+
+def auth(auth_type='file'):
+    def outer(func):
+        def wrapper(*args,**kwargs):
+            #说明已经进行过认证了，直接运行函数就ok
+            if login_status['name'] and login_status['pwd']:
+                return func(*args,**kwargs)
+            #满足认证的参数进行认证：
+            if auth_type == 'file':
+                print(login_status)
+                with open('user_message','r',encoding='utf8')as f:
+                    dic_data = eval(f.read())
+                username = input('用户名：').strip()
+                password = input('密码：').strip()
+                if username == dic_data['name'] and password == dic_data['password']:
+                    #修改login_status的值
+                    login_status['name'] = username
+                    login_status['pwd'] = password
+                    #执行func函数
+                    func(*args,**kwargs)
+                else:
+                    print('用户名或者密码错误！')
+            else:
+                print('非法函数！无权进行认证！')
+        return wrapper
+    return outer
+
+@auth(auth_type='file')
+def func1():
+    print('111')
+
+@auth(auth_type='file')
+def func2():
+    print(222)
+
+@auth(auth_type='file')
+def func3():
+    print(333)
+
+if __name__ == '__main__':
+    func1()
+    func2()
+    func3()
+</code></pre>
+
+<p><strong>利用闭包计算不同分制下的成绩通过情况</strong></p>
+<pre><code class="python">### 利用闭包计算不同分制下的成绩通过情况
+def score_pass(score_level):
+    def compare(score):
+        if score &gt;= score_level:
+            print('passed!')
+        else:
+            print('failed!')
+    return compare
+
+if __name__ == '__main__':
+    #100分制 60分及格
+    score_100 = score_pass(60)
+    #120分制，70分及格
+    score_120 = score_pass(70)
+    #相同的分数在不同分制下通过情况不一样！
+    score_100(60)#passed!
+    score_120(60)#failed!
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../描述符/" class="btn btn-neutral float-right" title="09 Python中的描述符">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../with/" class="btn btn-neutral" title="07 with上下文"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../with/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../描述符/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+
+</body>
+</html>
