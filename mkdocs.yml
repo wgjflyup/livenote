@@ -1,0 +1,12 @@
+site_name: Python入门与进阶指南
+theme: readthedocs
+
+nav: 
+  - Python基础:
+    - 01 基础1: python基础/基础1.md
+
+
+
+
+
+
